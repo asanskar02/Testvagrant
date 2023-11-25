@@ -1,0 +1,54 @@
+public class GSTCalculator {
+    public static void main(String[] args) {
+        String[] productNames = {"leather wallet", "umbrella", "cigarette", "honey"};
+        double[] prices = {1100, 900, 200, 100};
+        double[] gstPrices = {18, 12, 28, 0};
+        int[] quantities = {1, 4, 3, 2};
+
+        // Calculate GST for each product
+        Object[] gstResults = new Object[4];
+        for (int i = 0; i < 4; i++) {
+            gstResults[i] = calculateGST(productNames[i], prices[i], gstPrices[i], quantities[i]);
+        }
+
+        // Find the product with the maximum GST
+        String maxGSTProduct = "";
+        double maxGSTAmount = 0;
+        for (int i = 0; i < 4; i++) {
+            if ((double) gstResults[i + 1] > maxGSTAmount) {
+                maxGSTProduct = (String) gstResults[i];
+                maxGSTAmount = (double) gstResults[i + 1];
+            }
+               }
+
+        System.out.println("Maximum GST is paid for the product: " + maxGSTProduct);
+
+        // Calculate total amount to be paid to the shopkeeper
+        double totalAmount = 0;
+        for (int i = 0; i < 4; i++) {
+            totalAmount += (double) gstResults[i + 1];
+        }
+
+        System.out.println("Total amount to be paid to the shopkeeper is: " + totalAmount);
+    }
+
+    public static Object[] calculateGST(String product, double unitPrice, double gst, int quantity) {
+        double gstAmount = (gst * unitPrice) / 100;
+        double totalGST = gstAmount * quantity;
+
+        double discount = (unitPrice * quantity) * 0.05;
+        double totalAmount = unitPrice * quantity;
+
+        double netAmount;
+        if (unitPrice > 500) {
+            netAmount = totalAmount - discount;
+        } else {
+            netAmount = totalAmount;
+        }
+
+        Object[] result = new Object[]{product, netAmount, totalGST};
+        return result;
+    }
+}
+
+
